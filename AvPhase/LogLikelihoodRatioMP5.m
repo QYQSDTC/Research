@@ -2,7 +2,7 @@
 % this function should be implemented as efficient as possible, since it
 % would be called for a large amount of times, single source
 % 01/21/14, Yan Wang: adopt and modify from LogLikelihoodRatio()
-% 11/11/14, add fzero() after roots(), defaul TolX for fzero() is eps=2.2204eâ€?6
+% 11/11/14, add fzero() after roots(), defaul TolX for fzero() is eps=2.2204e-16
 % 11/13/14, compare fitness values at boundaries and at the stationary points
 % 12/19/14, cancel the changes made on 11/11/14, but still check boundary
 
@@ -50,7 +50,7 @@ k(3)=sin(delta);
 % quartic equation coefficients, closed form solution
 e=zeros(Np,5);
 lh=zeros(Np,6);  % likelihood for each pulsar  zeros(Np,4); two additions for boundaries
-phiItmp=zeros(Np,4);  % tmp solution to phiI
+phiItmp=zeros(Np,6);  % tmp solution to phiI
 phiI=zeros(Np,1);
 LLR=0.0;  % log likelihood ratio
 
