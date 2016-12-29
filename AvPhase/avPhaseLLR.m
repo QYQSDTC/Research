@@ -48,7 +48,7 @@ k(1)=cos(delta)*cos(alpha);
 k(2)=cos(delta)*sin(alpha);
 k(3)=sin(delta);
 %end
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % coefficients used in the numerical integration for the marginalization 
 b=zeros(Np,5);
 %bn=zeros(1,6);  % normalized by max(abs(b))
@@ -64,7 +64,7 @@ LLR=0.0;  % log likelihood ratio
 LRn=zeros(4,1);  % normalized LR in quadrant
 
 %sign=zeros(4,6);
-sign=[1.0, 1.0, 1.0, 1.0, 1.0; ...
+sign=[1.0, 1.0, 1.0, 1.0, 1.0;  ...
       1.0, -1.0, 1.0, -1.0, 1.0; ...
       1.0, -1.0, -1.0, 1.0, 1.0; ...
       1.0, 1.0, -1.0, -1.0, 1.0];
