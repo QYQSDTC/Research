@@ -1,6 +1,6 @@
 %The test file for confellip.m
 clear;
-results=load('F:\GitProject\MatlabPrograms\SpherePointPicking/H1stats_snr1_loc9_omg3.mat');
+results=load('/Users/qianyiqian/matlabprograms/spherepointpicking/H1stats_snr1_loc9_omg3.mat');
 XX=results.estSigParams(:,1);
 YY=results.estSigParams(:,2);
 [SD1,SD2]=confellip(XX,YY,'conf1',0.8,'conf2',0.90);
