@@ -41,9 +41,9 @@ snr_tmp(5)=1.0/13.2242*snr_net(5);  %12.0;
 
 %%%% Generate 1000 random GW sources
 Ns = 1000;% number of GW sources
-[Amp,alpha_temp,delta_temp,fgw,iota,Psi,Phi0,r]=GenerateRandomGWSource(Ns);
+[Amp,alpha_tmp,delta_tmp,fgw,iota,Psi,phi0,r]=GenerateRandomGWSource(Ns);
 
-omega = 2 .* pi .* fgw;
+omega_tmp = 2 .* pi .* fgw;
 % Nomg=3;  % number of GW frequency
 % omega_tmp=zeros(Nomg,1);
 % omega_tmp(1)=2*pi/0.3925; %16.0081;  % 0.3925 yr  high freq
@@ -269,21 +269,21 @@ nf=0;  % counter for number of files
 for ii=1:1:3 %Nsnr
     
     genHypothesis='H1 data';
-    Amp=snr_tmp(ii)*2*10^(-9);
+    %Amp=snr_tmp(ii)*2*10^(-9);
     
     for j=1:1:Ns  % number of GW sources
         
         % GW sky location in Cartesian coordinate
         k=zeros(1,3);  % unit vector pointing from SSB to source
-        k(1)=cos(delta_temp(j))*cos(alpha_temp(j));
-        k(2)=cos(delta_temp(j))*sin(alpha_temp(j));
-        k(3)=sin(delta_temp(j));
+        k(1)=cos(delta_tmp(j))*cos(alpha_tmp(j));
+        k(2)=cos(delta_tmp(j))*sin(alpha_tmp(j));
+        k(3)=sin(delta_tmp(j));
         
-        for l=1:1:Ns  % number of omega
+        %for l=1:1:Ns  % number of omega
             
             snr_id=ii; %num2str(ii);
             loc_id=j; %num2str(j);% source number
-            omg_id=l; %num2str(l);
+            omg_id=j; %num2str(l);
             
             snr_chr=0.0;  % initialize to zero
             
@@ -294,11 +294,11 @@ for ii=1:1:3 %Nsnr
                 %sprintf('%d pulsar theta=%g',i,theta)
                 %phiI(i)=mod(phi0-omega*distP(i)*(1-cos(theta)), 2*pi);  % modulus after division
                 %phiI(i)=mod(2*phi0-omega_tmp(l)*distP(i)*(1-cos(theta)), pi);  % modulus after division, YW 09/10/13
-                phiI(i)=mod(phi0(j)-0.5*omega_tmp(l)*distP(i)*(1-cos(theta)), pi);  % modulus after division, YW 04/30/14 check original def. of phiI
+                phiI(i)=mod(phi0(j)-0.5*omega_tmp(j)*distP(i)*(1-cos(theta)), pi);  % modulus after division, YW 04/30/14 check original def. of phiI
                 
                 disp(['pulsar = ', num2str(i), ' ', num2str(phiI(i))])
                 
-                timingResiduals_tmp(i,:)=FullResiduals(alpha_tmp(j),delta_tmp(j),omega_tmp(l),phi0(j),phiI(i),alphaP(i),deltaP(i),...
+                timingResiduals_tmp(i,:)=FullResiduals(alpha_tmp(j),delta_tmp(j),omega_tmp(j),phi0(j),phiI(i),alphaP(i),deltaP(i),...
                     Amp(j),iota(j),thetaN,theta,yr);
                 
                 %fftsignal(i,:)=fft(timingResiduals_tmp(i,:));
@@ -310,10 +310,10 @@ for ii=1:1:3 %Nsnr
                 % standardization of the true coordinates
                 stdTrueCoord(1)=(alpha_tmp(j)-xmaxmin(1,2))/(xmaxmin(1,1)-xmaxmin(1,2));  % [0, 2*pi]
                 stdTrueCoord(2)=(delta_tmp(j)-xmaxmin(2,2))/(xmaxmin(2,1)-xmaxmin(2,2));  % [-pi/2, pi/2]
-                stdTrueCoord(3)=(omega_tmp(l)-xmaxmin(3,2))/(xmaxmin(3,1)-xmaxmin(3,2));  % [2, 20]
-                stdTrueCoord(4)= mod(phi0,pi)/pi;  % [0, pi]
-                stdTrueCoord(5)=(log10(Amp)-xmaxmin(5,2))/(xmaxmin(5,1)-xmaxmin(5,2));
-                stdTrueCoord(6)=(iota-xmaxmin(6,2))/(xmaxmin(6,1)-xmaxmin(6,2));
+                stdTrueCoord(3)=(omega_tmp(j)-xmaxmin(3,2))/(xmaxmin(3,1)-xmaxmin(3,2));  % [2, 20]
+                stdTrueCoord(4)= mod(phi0(j),pi)/pi;  % [0, pi]
+                stdTrueCoord(5)=(log10(Amp(j))-xmaxmin(5,2))/(xmaxmin(5,1)-xmaxmin(5,2));
+                stdTrueCoord(6)=(iota(j)-xmaxmin(6,2))/(xmaxmin(6,1)-xmaxmin(6,2));
                 stdTrueCoord(7)=(thetaN-xmaxmin(7,2))/(xmaxmin(7,1)-xmaxmin(7,2));
                 
             end
@@ -356,11 +356,11 @@ for ii=1:1:3 %Nsnr
                 %disp(['In simulator2: perfect_fitness: ', num2str(perfect_fitness)]);
                 
                 % save metadata into a file for each realization (file name rule)
-                filename=strcat('snr',num2str(ii),'loc',num2str(j),'omg',num2str(l),'rlz',num2str(jj),'.mat');
+                filename=strcat('snr',num2str(ii),'loc',num2str(j),'omg',num2str(j),'rlz',num2str(jj),'.mat');
                 snr=snr_tmp(ii);
                 alpha=alpha_tmp(j);
                 delta=delta_tmp(j);
-                omega=omega_tmp(l);
+                omega=omega_tmp(j);
                 CA4filenames{nf}=filename;
                 
                 save([simDataDir,filesep,filename],'genHypothesis','snr','alpha','delta','omega','iota','thetaN','phi0',...
@@ -368,7 +368,7 @@ for ii=1:1:3 %Nsnr
                              
             end
             
-        end
+       % end
         
     end
     
