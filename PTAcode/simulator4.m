@@ -39,26 +39,21 @@ snr_tmp(3)=1.0/13.2242*snr_net(3);  %12.0;
 snr_tmp(4)=1.0/13.2242*snr_net(4); %10.0;
 snr_tmp(5)=1.0/13.2242*snr_net(5);  %12.0;
 
-Nloc=3;  % number of source sky location
-alpha_tmp=zeros(Nloc,1);
-delta_tmp=zeros(Nloc,1);
-alpha_tmp(1)=pi/4+1.2;
-delta_tmp(1)=pi/4-0.16;
-alpha_tmp(2)=4.367;  % cond(A)=1.017
-delta_tmp(2)=0.8796;
-alpha_tmp(3)=0.9999;
-delta_tmp(3)=0.5007;
+%%%% Generate 1000 random GW sources
+Ns = 1000;% number of GW sources
+[Amp,alpha_temp,delta_temp,fgw,iota,Psi,Phi0,r]=GenerateRandomGWSource(Ns);
 
-Nomg=3;  % number of GW frequency
-omega_tmp=zeros(Nomg,1);
-omega_tmp(1)=2*pi/0.3925; %16.0081;  % 0.3925 yr  high freq
-omega_tmp(2)=4.2743;  % 1.47 yr  low freq
-omega_tmp(3)=2*pi/(1.6);  % orbital freq is 10^(-8) Hz
+omega = 2 .* pi .* fgw;
+% Nomg=3;  % number of GW frequency
+% omega_tmp=zeros(Nomg,1);
+% omega_tmp(1)=2*pi/0.3925; %16.0081;  % 0.3925 yr  high freq
+% omega_tmp(2)=4.2743;  % 1.47 yr  low freq
+% omega_tmp(3)=2*pi/(1.6);  % orbital freq is 10^(-8) Hz
 
 % optimized value
-iota=0.4949; %0.0;  %pi/4+0.6;  % inclination between orbital plane and plane of the sky
+%iota=0.4949; %0.0;  %pi/4+0.6;  % inclination between orbital plane and plane of the sky
 thetaN=0.5; %pi/4;  %pi/2;  % angle to the line of nodes
-phi0=2.89;  %1.6;  %0.0;  % initial orbital phase
+%phi0=2.89;  %1.6;  %0.0;  % initial orbital phase
 
 % ===============================
 % Constructing a pulsar timing array using Np pulsars
@@ -276,18 +271,18 @@ for ii=1:1:3 %Nsnr
     genHypothesis='H1 data';
     Amp=snr_tmp(ii)*2*10^(-9);
     
-    for j=3:1:3  %Nloc
+    for j=1:1:Ns  % number of GW sources
         
         % GW sky location in Cartesian coordinate
         k=zeros(1,3);  % unit vector pointing from SSB to source
-        k(1)=cos(delta_tmp(j))*cos(alpha_tmp(j));
-        k(2)=cos(delta_tmp(j))*sin(alpha_tmp(j));
-        k(3)=sin(delta_tmp(j));
+        k(1)=cos(delta_temp(j))*cos(alpha_temp(j));
+        k(2)=cos(delta_temp(j))*sin(alpha_temp(j));
+        k(3)=sin(delta_temp(j));
         
-        for l=3:1:3  %Nomg
+        for l=1:1:Ns  % number of omega
             
             snr_id=ii; %num2str(ii);
-            loc_id=j; %num2str(j);
+            loc_id=j; %num2str(j);% source number
             omg_id=l; %num2str(l);
             
             snr_chr=0.0;  % initialize to zero
@@ -299,12 +294,12 @@ for ii=1:1:3 %Nsnr
                 %sprintf('%d pulsar theta=%g',i,theta)
                 %phiI(i)=mod(phi0-omega*distP(i)*(1-cos(theta)), 2*pi);  % modulus after division
                 %phiI(i)=mod(2*phi0-omega_tmp(l)*distP(i)*(1-cos(theta)), pi);  % modulus after division, YW 09/10/13
-                phiI(i)=mod(phi0-0.5*omega_tmp(l)*distP(i)*(1-cos(theta)), pi);  % modulus after division, YW 04/30/14 check original def. of phiI
+                phiI(i)=mod(phi0(j)-0.5*omega_tmp(l)*distP(i)*(1-cos(theta)), pi);  % modulus after division, YW 04/30/14 check original def. of phiI
                 
                 disp(['pulsar = ', num2str(i), ' ', num2str(phiI(i))])
                 
-                timingResiduals_tmp(i,:)=FullResiduals(alpha_tmp(j),delta_tmp(j),omega_tmp(l),phi0,phiI(i),alphaP(i),deltaP(i),...
-                    Amp,iota,thetaN,theta,yr);
+                timingResiduals_tmp(i,:)=FullResiduals(alpha_tmp(j),delta_tmp(j),omega_tmp(l),phi0(j),phiI(i),alphaP(i),deltaP(i),...
+                    Amp(j),iota(j),thetaN,theta,yr);
                 
                 %fftsignal(i,:)=fft(timingResiduals_tmp(i,:));
 
