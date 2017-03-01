@@ -4,11 +4,11 @@
 function [Amp,alpha,delta,fgw,iota,Psi,Phi0,r]=GenerateRandomGWSource(Ns)
 %Ns = 1000; % number of sourses
 %% parameters to locate the source
-lnMc = random('uniform',6,10,1,Ns);
-Mc = exp(lnMc);
+log10Mc = random('uniform',6,10,1,Ns);
+Mc = exp(log10Mc);
 [alpha,delta]=SpherePointPicking(Ns);
-lnfgw = random('uniform',-9,-6,1,Ns);% generate ln(fgw)
-fgw = exp(lnfgw);% get the real fgw
+log10fgw = random('uniform',-1.523,1.477,1,Ns);% generate ln(fgw) yr^-1
+fgw = exp(log10fgw);% get the real fgw
 iota = random('uniform',0,pi,1,Ns);
 Psi = random('uniform',0,pi,1,Ns);
 Phi0 = random('uniform',0,pi,1,Ns);
