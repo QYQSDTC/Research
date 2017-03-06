@@ -205,7 +205,7 @@ simParams = struct('Np',Np,'N',N,'sd',sd,...
 % calculate timing residuals induced by GW for each pulsar
 %Amp=1.3*10^(-7);  % overall amplitude of timing residuals, the same for all pulsars, sec
 %timingResiduals=zeros(Np,N);  % signal, i.e. GW induced timing residuals, Np pulsars, N observations
-timingResiduals_tmp=zeros(Ns,N);   % signal without noise
+timingResiduals_tmp=zeros(Np,N);   % signal without noise
 phiI=zeros(Np,1);  % arbitrary phase for each pulsar, relative distance
 
 %Nrlz=10;  %500;  %200;  %25;  % number of noise realizations H1
