@@ -3,18 +3,20 @@ load('/Users/qianyiqian/desktop/matlabprograms/PTAcode/GWB/GWB.mat');
 Np=getfield(simParams,'Np');
 kp=getfield(simParams,'kp');
 N=getfield(simParams,'N');
-cthetaC=zeros(Np,Np);%%%cos(theta) between every two pulsar
-r=zeros(Np,Np);%%%correlation coefficients
-for i=1:1:Np
-    for j=1:1:Np
-cthetaC(i,j)=kp(i,:)*kp(j,:)';%%% cos(theta) between every two pulsar
-    end
-end
-thetaC=acos(cthetaC);%%%% theta between every two pulsar
+cthetaC=zeros(1,(Np-1)*Np/2);%%%cos(theta) between every two pulsar
+r=zeros(1,(Np-1)*Np/2);%%%correlation coefficients
+ct = 1;%% counter
 
-for i=1:1:Np
-    for j=1:1:Np
-    r(i,j) = timingResiduals_tmp(i,:)*timingResiduals_tmp(j,:)'*cthetaC(i,j)/N;
+for i=1:1:Np-1
+    for j=1+i:1:Np
+        
+        cthetaC(:,ct)=kp(i,:)*kp(j,:)';%%% cos(theta) between every two pulsar
+        R=(timingResiduals_tmp(i,:)*timingResiduals_tmp(i,:)')...
+       *(timingResiduals_tmp(j,:)*timingResiduals_tmp(j,:)');
+        r(:,ct) = timingResiduals_tmp(i,:)*timingResiduals_tmp(j,:)'/sqrt(R);
+        ct = ct+1;
+        
     end
 end
-plot(thetaC,r,'.m');
+thetaC=acos(cthetaC)*180/pi;%%%% theta between every two pulsar
+plot(thetaC,r,'.k');
