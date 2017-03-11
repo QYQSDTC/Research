@@ -40,7 +40,7 @@ kilo=1.0*10^3;  % kilo 1000
 % snr_tmp(5)=1.0/13.2242*snr_net(5);  %12.0;
 
 %%%% Generate 1000 random GW sources
-Ns = 1000;% number of GW sources
+Ns = 10000;% number of GW sources
 [Amp,alpha_tmp,delta_tmp,fgw,iota,thetaN,phi0,r]=GenerateRandomGWSource(Ns);
 
 omega_tmp = 2 .* pi .* fgw .* 3 .* 10^7;%% change the unit to yr^-1
