@@ -43,7 +43,7 @@ kilo=1.0*10^3;  % kilo 1000
 Ns = 1000;% number of GW sources
 [Amp,alpha_tmp,delta_tmp,fgw,iota,thetaN,phi0,r]=GenerateRandomGWSource(Ns);
 
-omega_tmp = 2 .* pi .* fgw;
+omega_tmp = 2 .* pi .* fgw .* 3 .* 10^7;%% change the unit to yr^-1
 % Nomg=3;  % number of GW frequency
 % omega_tmp=zeros(Nomg,1);
 % omega_tmp(1)=2*pi/0.3925; %16.0081;  % 0.3925 yr  high freq
