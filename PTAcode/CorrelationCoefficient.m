@@ -1,10 +1,10 @@
 %%%% calculate the correlation coefficient
-function CE = CorrelationCoefficient()
-run simulator4.m
+function [CE,thetaC] = CorrelationCoefficient()
+run simulator4.m;
 load('/Users/qianyiqian/desktop/matlabprograms/PTAcode/GWB/GWB.mat');
 Np=getfield(simParams,'Np');
 kp=getfield(simParams,'kp');
-N=getfield(simParams,'N');
+%N=getfield(simParams,'N');
 cthetaC=zeros(1,(Np-1)*Np/2);%%%cos(theta) between every two pulsar
 CE=zeros(1,(Np-1)*Np/2);%%%correlation coefficients
 ct = 1;%% counter
@@ -21,4 +21,4 @@ for i=1:1:Np-1
     end
 end
 thetaC=acos(cthetaC)*180/pi;%%%% theta between every two pulsar
-plot(thetaC,CE,'.k');
+%plot(thetaC,CE,'.k');
