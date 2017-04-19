@@ -1,3 +1,3 @@
 # MatlabPrograms
 
-Some Matlab Programs need to be transformed to C
+The primary programs for Pulsar Timing Array to detect the GW 
