@@ -1,4 +1,4 @@
-%% schoaic gravitational background
+%% stochastic gravitational background
 function [timingResidulas_tmp]=SGWB(alphaP,deltaP,distP,yr,Ns,kp)
         
 [Amp,alpha_tmp,delta_tmp,fgw,iota,thetaN,phi0,r]=GenerateRandomGWSource(Ns);
