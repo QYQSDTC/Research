@@ -4,8 +4,6 @@
 
 clear;
 
-Np=17;  % number of detectors/pulsars
-
 %alphaP=zeros(Np,1);
 %deltaP=zeros(Np,1);
 %distP=zeros(Np,1);  % (parallax) distance from SSB to pulsars, from mas/pc to ly
@@ -13,8 +11,9 @@ Np=17;  % number of detectors/pulsars
 
 % retrive the configuration of a PTA
 %[PTAconf, pname] = PTA_8();
-[PTAconf, pname] = PTA_17();
-
+%[PTAconf, pname] = PTA_17();
+PTAconf=load('/Users/qianyiqian/desktop/matlabprograms/FAST Pulsars/FASTband1.mat');
+Np=length(PTAconf.alphaP);  % number of detectors/pulsars
 alphaP=PTAconf.alphaP;
 deltaP=PTAconf.deltaP;
 kp=PTAconf.kp;
@@ -23,8 +22,8 @@ A=zeros(Np,2);  % network response matrix: Np pulsars, 2 GW polarizations +,x
 Fp=zeros(Np,1);  % antenna pattern func for +,  range vector of A
 Fc=zeros(Np,1);  % antenna pattern func for x
 
-Na=100;
-Nd=50;
+Na=200;
+Nd=200;
 alpha=zeros(Na,1);  % ra of source
 delta=zeros(Nd,1);  % dec of source
 ks=zeros(1,3);
@@ -79,13 +78,18 @@ disp(['The values for ra and dec are: ', num2str(alpha(ind(ind1))),' and ',num2s
 % skymap of the condition number
 figure
 surf(alpha,delta,Acond');
-title(['Skymap for the condition number of A for ', num2str(Np), ' pulsars']);
+map=parula(1024);
+colormap(map);
+caxis([1.00 1.50]);
+title(['Skymap for the condition number of A for ', num2str(Np), ' pulsars in band 1']);
 %surf(alpha,delta,log10(Acond)');  % log10 plot
-
-figure
-surf(alpha,delta,Inten');
-title(['Skymap for Inten for ', num2str(Np), ' pulsars']);
-% imagesc
+shading flat;
+view(2);
+gird off;
+% figure
+% surf(alpha,delta,Inten');
+% title(['Skymap for Inten for ', num2str(Np), ' pulsars']);
+% % imagesc
 
 
 % End
