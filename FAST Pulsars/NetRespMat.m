@@ -12,7 +12,8 @@ clear;
 % retrive the configuration of a PTA
 %[PTAconf, pname] = PTA_8();
 %[PTAconf, pname] = PTA_17();
-PTAconf=load('/Users/qianyiqian/desktop/matlabprograms/FAST Pulsars/FASTband1.mat');
+
+PTAconf=load('/Users/qianyiqian/desktop/matlabprograms/FAST Pulsars/FASTband1_2.mat');
 Np=length(PTAconf.alphaP);  % number of detectors/pulsars
 alphaP=PTAconf.alphaP;
 deltaP=PTAconf.deltaP;
@@ -78,14 +79,14 @@ disp(['The values for ra and dec are: ', num2str(alpha(ind(ind1))),' and ',num2s
 % skymap of the condition number
 figure
 surf(alpha,delta,Acond');
-map=parula(1024);
-colormap(map);
-caxis([1.00 1.50]);
-title(['Skymap for the condition number of A for ', num2str(Np), ' pulsars in band 1']);
+%map=parula(1024);
+colormap;
+%caxis([1.00 1.50]);
+title(['Skymap for the condition number of A for ', num2str(Np), ' pulsars in FAST Band 1']);
 %surf(alpha,delta,log10(Acond)');  % log10 plot
 shading flat;
 view(2);
-gird off;
+%gird off;
 % figure
 % surf(alpha,delta,Inten');
 % title(['Skymap for Inten for ', num2str(Np), ' pulsars']);

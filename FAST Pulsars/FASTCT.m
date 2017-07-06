@@ -1,10 +1,11 @@
 %% FAST ms Pulsars coordinates transformation
 %% 2017.4.13 QYQ
+%%
 clear;
 
 fastmsp=load('/Users/qianyiqian/desktop/matlabprograms/FAST Pulsars/survey_ska.mat');
 [~,I]=sort(fastmsp.D);
-Np=1000;%for ska data
+Np=100; %220 for fastband2 %287 % for fastband1 %1000  %for ska data
 %Np = length(fastmsp.D);
 InList = zeros(1,2);
 OutList = zeros(1,2);
@@ -29,4 +30,4 @@ for i=1:1:Np
     kp(i,3)=sin(deltaP(i));
 end
 
-save('ska.mat','alphaP','deltaP','kp');
+save('ska-100.mat','alphaP','deltaP','kp');

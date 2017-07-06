@@ -3,9 +3,9 @@
 %%
 clear;
 
-fastmsp=load('/Users/qianyiqian/desktop/matlabprograms/FAST Pulsars/fastmsp2.mat');
+fastmsp=load('/Users/qianyiqian/desktop/matlabprograms/FAST Pulsars/survey_ska.mat');
 [~,I]=sort(fastmsp.D);
-for Np = 50:50:450  %check how every add 50 pulsars to affect the condition number 
+for Np = 200:100:1000  %check how every add 50 pulsars to affect the condition number 
 %Np = length(fastmsp.D);
 InList = zeros(1,2);
 OutList = zeros(1,2);
@@ -29,6 +29,6 @@ for i=1:1:Np
     kp(i,2)=cos(deltaP(i))*sin(alphaP(i));
     kp(i,3)=sin(deltaP(i));
 end
-filename = strcat('FASTband2-',num2str(Np),'.mat');
+filename = strcat('ska-',num2str(Np),'.mat');
 save(filename,'alphaP','deltaP','kp');
 end

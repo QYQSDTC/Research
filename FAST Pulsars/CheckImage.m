@@ -12,8 +12,8 @@ clear;
 % retrive the configuration of a PTA
 %[PTAconf, pname] = PTA_8();
 %[PTAconf, pname] = PTA_17();
-for t = 50:50:450
-    filename=strcat('FASTband2-',num2str(t),'.mat');
+for t = 100:100:1000
+    filename=strcat('ska-',num2str(t),'.mat');
 PTAconf=load(filename);
 Np=length(PTAconf.alphaP);  % number of detectors/pulsars
 alphaP=PTAconf.alphaP;
@@ -83,7 +83,7 @@ surf(alpha,delta,Acond');
 %map=parula(1024);
 colormap;
 caxis([1.00 1.90]);
-title(['Skymap for the condition number of A for ', num2str(Np), ' pulsars in FAST Band 2']);
+title(['Skymap for the condition number of A for ', num2str(Np), ' pulsars in ska']);
 %surf(alpha,delta,log10(Acond)');  % log10 plot
 shading flat;
 view(2);
