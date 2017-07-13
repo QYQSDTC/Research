@@ -1,0 +1,20 @@
+function cov_res=powerlaw_covgen(vt, nf, fmax, fc, alpha)
+fmin=1./(max(vt)-min(vt));
+lfmin=log(fmin);
+lfmax=log(fmax);
+vx=0:(1./nf):(1);
+vlf=lfmin+(lfmax-lfmin).*vx;
+vf=exp(vlf);
+k=(vf./fc).^(alpha*2)*(lfmax-lfmin);
+k2=zeros(1,length(k)*2);
+k2(1:2:end)=k;
+k2(2:2:end)=k;
+k=k2;
+ang=kron(vt,vf')*2*pi;
+phic=cos(ang);
+phis=sin(ang);
+phi=zeros(length(vf)*2, length(vt));
+phi(1:2:end)=phic;
+phi(2:2:end)=phis;
+cov_res=phi'*diag(k2)*phi;
+end
