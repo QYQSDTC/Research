@@ -6,23 +6,25 @@ clear;
 %% set parameter
 
 i=4;% the partial parameter Cij
-j=1;% as the above
+j=100;% as the above
 vt=0:0.01:10;
 nf=200;
 fmax=200;
-fc=1;
+fc=3;
 alpha=-13/3;
-%C=random('uniform',1,10,10000,10000);
+%C=random('uniform',10^3,10^8,1000,1000);
 C=powerlaw_cov(vt,nf,fmax,fc,alpha);
 N=length(C);
 x=ones(N,1);
 r=rank(C);%trace of Matrix
 C1=C;
-C1(i,j)=C(i,j)+1;
+ita=10^(-6);%10^(-9);%10^(-6);% relative error
+dc=ita*C(i,j);% delta C
+C1(i,j)=C(i,j)+dc;
 dC=det(C);
 iC=pinv(C);
 k=cond(C);% condition number C in norm 2
-p=10;% p usually is less than 10 
+%p=10;% p usually is less than 10 
 dC1=det(C1);
 iC1=pinv(C1);
 
@@ -33,14 +35,9 @@ lamda2=-1/2*log(abs(det(C1)))-1/2*x'*iC1*x;
 dlamda=lamda2-lamda;
 
 
-%% analytic
-
-%v=zeros(3,3);
-A=zeros(N,N);
-dc=C1(i,j)-C(i,j);% delta C  
-%v(i,j)=1;
-
 %% Calculate the Matrix A
+
+A=zeros(N,N);
 
 for l=1:1:N
     for m=1:1:N
@@ -96,11 +93,18 @@ rerr1=ddlamda/lamda;%relative error
 %     rerr2=error/C(i,j);
 % end
 [U,S,V]=svd(C);
-s=pinv(S);
-err1=4*eps*norm(s,'fro')*norm(x)^2;
-err2=(N-1)*eps;
-err=err1+err2;
+[U1,S1,V1]=svd(C1);
+% Y=U'*x;
+% s=S;
+% s(find(s~=0))=1./S(find(S~=0));
+dS=S1-S;
+% delta=eye(N,N);
+% 
+% for l=1:1:N
+%     delta(l,l)=dS(l,l)/S(l,l);
+% end
 
+error=2*N^2*ita;
 
 toc;
 
