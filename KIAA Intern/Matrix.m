@@ -10,7 +10,7 @@ j=100;% as the above
 vt=0:0.01:10;
 nf=200;
 fmax=200;
-fc=3;
+fc=2;
 alpha=-13/3;
 %C=random('uniform',10^3,10^8,1000,1000);
 C=powerlaw_cov(vt,nf,fmax,fc,alpha);
@@ -45,8 +45,8 @@ for l=1:1:N
     end
 end
 
-ddlamda=abs((-1/2*iC(j,i)+1/2*x'*A*x)*dc);% analytic formula of delta lambda
-rerr1=ddlamda/lamda;%relative error
+error1=abs((-1/2*iC(j,i)+1/2*x'*A*x)*dc);% analytic formula of delta lambda
+%rerr1=ddlamda/lamda;%relative error
 %err=-1/2*iC(j,i)*dc;
 %err2=1/2*x*A*x'*dc;
 
@@ -95,16 +95,18 @@ rerr1=ddlamda/lamda;%relative error
 [U,S,V]=svd(C);
 [U1,S1,V1]=svd(C1);
 % Y=U'*x;
-% s=S;
-% s(find(s~=0))=1./S(find(S~=0));
+ s=S;
+ s(find(s~=0))=1./S(find(S~=0));
 dS=S1-S;
-% delta=eye(N,N);
-% 
-% for l=1:1:N
-%     delta(l,l)=dS(l,l)/S(l,l);
-% end
+ delta=eye(N,N);
 
-error=2*N^2*ita;
+for l=1:1:N
+    delta(l,l)=dS(l,l)^2/S(l,l)^2;
+end
+
+gama = norm(dS,'fro')/dc;
+error2=1/4*gama;
+%error2=trace(delta);
 
 toc;
 
