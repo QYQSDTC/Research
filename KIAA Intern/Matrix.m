@@ -1,12 +1,8 @@
-%% Rounding errors in Singular Matrix 
+%% Rounding errors in Singular Matrix
 %% QYQ 2017.7.3
 tic;
 clear;
-
-%% set parameter
-
-i=4;% the partial parameter Cij
-j=100;% as the above
+%% generate the matrix
 vt=0:0.01:10;
 nf=200;
 fmax=200;
@@ -15,24 +11,26 @@ alpha=-13/3;
 %C=random('uniform',10^3,10^8,1000,1000);
 C=powerlaw_cov(vt,nf,fmax,fc,alpha);
 N=length(C);
+i=unidrnd(N);
+j=unidrnd(N);
 x=ones(N,1);
 r=rank(C);%trace of Matrix
 C1=C;
 ita=10^(-6);%10^(-9);%10^(-6);% relative error
 dc=ita*C(i,j);% delta C
 C1(i,j)=C(i,j)+dc;
-dC=det(C);
+%dC=det(C);
 iC=pinv(C);
-k=cond(C);% condition number C in norm 2
-%p=10;% p usually is less than 10 
-dC1=det(C1);
+%k=cond(C);% condition number C in norm 2
+%p=10;% p usually is less than 10
+%dC1=det(C1);
 iC1=pinv(C1);
 
-%% numerical
-
-lamda=-1/2*log(abs(det(C)))-1/2*x'*iC*x;
-lamda2=-1/2*log(abs(det(C1)))-1/2*x'*iC1*x;
-dlamda=lamda2-lamda;
+% %% numerical
+% 
+% lamda=-1/2*log(abs(det(C)))-1/2*x'*iC*x;
+% lamda2=-1/2*log(abs(det(C1)))-1/2*x'*iC1*x;
+% dlamda=lamda2-lamda;
 
 
 %% Calculate the Matrix A
@@ -65,12 +63,12 @@ error1=abs((-1/2*iC(j,i)+1/2*x'*A*x)*dc);% analytic formula of delta lambda
 %     end
 % end
 
-%% Calculate Euclidian Norm for inv(C) 
+%% Calculate Euclidian Norm for inv(C)
 % replace by norm(iC,'fro')
 % a=0;
 % for l=1:1:N
 %     for m=1:1:N
-%         a=iC(l,m)^2+a; 
+%         a=iC(l,m)^2+a;
 %     end
 %     b=sqrt(a); % the Euclid Norm
 % end
@@ -85,29 +83,42 @@ error1=abs((-1/2*iC(j,i)+1/2*x'*A*x)*dc);% analytic formula of delta lambda
 % mmerr=(2*N+3)*eps*norm(U,'fro')^4*norm(x)^2*norm(s,'fro')^2;% error for multiple matrix times.
 % error=merr+mmerr;% total error
 % rerr2=error/C(i,j);
-% 
-% else 
+%
+% else
 %     merr=-p*k*eps*norm(iC,'fro');
 %     mmerr=(p^2*k^2*eps^2+2*p*k*eps)*norm(iC,'fro')^2*norm(x)^2;
 %     error=merr+mmerr;
 %     rerr2=error/C(i,j);
 % end
+
+%% SVD 
 [U,S,V]=svd(C);
+DS=diag(S);
 [U1,S1,V1]=svd(C1);
+%S1=U'*C1*V;
+DS1=diag(S1);
 % Y=U'*x;
- s=S;
- s(find(s~=0))=1./S(find(S~=0));
-dS=S1-S;
- delta=eye(N,N);
+s=S;
+s1=S1;
+s(find(s~=0))=1./S(find(S~=0));
+s1(find(s1~=0))=1./S1(find(S1~=0));
+dS=DS1-DS;
+
+
+lambda = -1/2*sum(log(DS))-1/2*x'*V*s*U'*x;
+lambda1 = -1/2*sum(log(DS1))-1/2*x'*V1*s1*U1'*x;
+error2 = abs(lambda1 - lambda);% numerical
+
+delta=zeros(N,1);
 
 for l=1:1:N
-    delta(l,l)=dS(l,l)^2/S(l,l)^2;
+    delta(l)=dS(l)^2/S(l,l)^2;
 end
 
-gama = norm(dS,'fro')/dc;
-error2=1/4*gama;
-%error2=trace(delta);
-
+%gama = norm(dS,'fro')/dc;
+%error2=norm(dS,'fro')/norm(S,'fro');
+error3=sum(delta);% analytical
+%ratio = error2/error3;
+%epu=error2/error3;
 toc;
-
 
