@@ -8,6 +8,7 @@ tic;
 np=-100:0.1:100;
 N=length(np);
 noise=random('norm',0,1,1,N);
+weights=abs(noise);
 fl=100;% MHz frequency down limit 140MHz
 ch=100:1:130;% different channel
 BW=length(ch);
@@ -75,10 +76,10 @@ yy=reshape(signal,[1 BW*N]);
 % [p3,gof3]=fit(t(:),y(:),ft3);
 mu=zeros(BW,1);
 for i=1:1:BW
-    %options=fitoptions('Weight',noise);
+    options=fitoptions('Weights',weights);
     ft=fittype('gauss1');
     y=signal(:,i);
-    [p,~]=fit(np(:),y(:),ft);
+    [p,~]=fit(np(:),y(:),ft,options);
     mu(i)=p.b1;
 end
 
@@ -87,7 +88,7 @@ f=ch;
 t1=mu-tao(BW);
 [p,g]=fit(f(:),t1(:),ft2);
 figure
-plot(p,f,t1,'-b')
+plot(p,f,t1,'.b')
 
 
 %% analytical 
