@@ -37,6 +37,7 @@ end
 
 xx=reshape(t,[1 BW*N]);
 yy=reshape(signal,[1 BW*N]);
+save('data.mat','xx','yy');
 % figure
 % for i = 1:1:4
 %     subplot(2,2,i)
@@ -44,15 +45,15 @@ yy=reshape(signal,[1 BW*N]);
 %     hold on
 % end
 % 
-% for i = 2:1:4
-% tao(i)=4150*DM*(ch(i)^(-2.1)-ch(i-1)^(-2.1));
-% gt=snr*normpdf(t-sum(tao(1:i,:)),0,0.1);
-% g(i,:)=gt;
-% signal(i,:)=signal(i-1,:)+gt;
-% end
-% 
-% figure 
-% plot(t,signal(4,:))
+for i = 2:1:BW
+tao(i)=4150*DM*(ch(i)^(-2)-ch(i-1)^(-2));
+gt=snr*normpdf(np,sum(tao(1:i,:)),0.1);
+g(:,i)=gt;
+signal(:,i)=signal(:,i-1)+gt';
+end
+
+figure 
+plot(np,signal(:,BW))
 
 %% curve fitting
 % ft=fittype('gauss1');
