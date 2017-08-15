@@ -37,7 +37,7 @@ end
 
 xx=reshape(t,[1 BW*N]);
 yy=reshape(signal,[1 BW*N]);
-save('data.mat','xx','yy');
+%save('data.txt','xx','yy','-ascii');
 % figure
 % for i = 1:1:4
 %     subplot(2,2,i)
@@ -45,15 +45,19 @@ save('data.mat','xx','yy');
 %     hold on
 % end
 % 
-for i = 2:1:BW
-tao(i)=4150*DM*(ch(i)^(-2)-ch(i-1)^(-2));
-gt=snr*normpdf(np,sum(tao(1:i,:)),0.1);
-g(:,i)=gt;
-signal(:,i)=signal(:,i-1)+gt';
-end
-
-figure 
-plot(np,signal(:,BW))
+% for i = 2:1:BW
+% tao(i)=4150*DM*(ch(i)^(-2)-ch(i-1)^(-2));
+% gt=snr*normpdf(np,sum(tao(1:i,:)),0.1);
+% g(:,i)=gt;
+% signal(:,i)=signal(:,i-1)+gt';
+% end
+% 
+% figure 
+% plot(np,signal(:,BW))
+% 
+% fit_np=np';% to import to origin
+%save('fit_x.txt','fit_np','-ascii')
+%save('fit_y.txt','signal','-ascii')
 
 %% curve fitting
 % ft=fittype('gauss1');
@@ -76,12 +80,13 @@ plot(np,signal(:,BW))
 % y=signal(3,:);
 % [p3,gof3]=fit(t(:),y(:),ft3);
 mu=zeros(BW,1);
-for i=1:1:BW
+for i=3:1:3
     options=fitoptions('Weights',weights);
-    ft=fittype('gauss1');
+    ft=fittype('gauss3');
     y=signal(:,i);
     [p,~]=fit(np(:),y(:),ft,options);
     mu(i)=p.b1;
+    plot(p,np,y)
 end
 
 ft2=fittype('a*x^(-b)-207.5+84.7189');
