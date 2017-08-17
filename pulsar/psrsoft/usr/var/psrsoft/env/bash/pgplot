@@ -1,0 +1,4 @@
+export PGPLOT_DIR=$PSRSOFT_USR/share/pgplot
+export PGPLOT_FONT=$PSRSOFT_USR/share/pgplot/grfont.dat
+export PGPLOT_RGB=$PSRSOFT_USR/share/pgplot/rgb.txt
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+rm -rf src/tempo2
+rm -rf share/tempo2
+rm -rf bin/tempo2

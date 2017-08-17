@@ -1,0 +1,38 @@
+#!/bin/bash
+
+
+cd src/pgplot
+
+PGPLOT_DIR=`pwd`
+./makemake . linux g77_gcc
+ex=$?
+if [ $ex != 0 ] ; then
+	exit $ex
+fi
+
+grep -v './png.h' < makefile > makefile.edit
+\mv -f makefile.edit makefile
+sed -ie 's:\$(FFLAGC) -o pgpack:-o pgpack:g' makefile
+sed -ie 's:g77:$(F77) $(FFLAGS):g' makefile
+sed -ie 's:gcc:$(CC) $(CFLAGS):g' makefile
+sed -ie 's:SHARED_LIB_LIBS=:SHARED_LIB_LIBS=$(LIBS) -lpng $(FLIBS):g' makefile
+sed -ie 's:libpgplot.a $(SHARED_LIB):libpgplot.a:g' makefile
+
+make clean
+make && make cpg && make clean
+ex=$?
+if [ $ex != 0 ] ; then
+	exit $ex
+fi
+
+\rm -r libpgplot.so
+
+mkdir -p $PSRSOFT_USR/lib/
+mkdir -p $PSRSOFT_USR/include/
+mkdir -p $PSRSOFT_USR/share/pgplot
+
+mv lib*pgplot.a $PSRSOFT_USR/lib/
+mv cpgplot.h $PSRSOFT_USR/include/
+mv pgxwin_server rgb.txt grfont.dat $PSRSOFT_USR/share/pgplot
+
+

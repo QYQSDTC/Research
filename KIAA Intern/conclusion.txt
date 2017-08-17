@@ -1,0 +1,9 @@
+Input Parameters
+DM 500
+ beta 2
+ BW 100MHz-130MHz
+ Channel 31
+fit error:
+DM error is  8.79651
+beta error for fit is  0.00378
+theoretical error for beta is  0.00231

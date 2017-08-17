@@ -45,20 +45,20 @@ yy=reshape(signal,[1 BW*N]);
 %     hold on
 % end
 % 
-for i = 2:1:BW
-tao(i)=4150*DM*(ch(i)^(-2)-ch(i-1)^(-2));
-gt=snr*normpdf(np,sum(tao(1:i,:)),0.1);
-g(:,i)=gt;
-signal(:,i)=signal(:,i-1)+gt';
-end
+% for i = 2:1:BW
+% tao(i)=4150*DM*(ch(i)^(-2)-ch(i-1)^(-2));
+% gt=snr*normpdf(np,sum(tao(1:i,:)),0.1);
+% g(:,i)=gt;
+% signal(:,i)=signal(:,i-1)+gt';
+% end
+% 
+% figure 
+% plot(np,signal(:,BW))
 
-figure 
-plot(np,signal(:,BW))
-
-fit_np=np';% to import to origin
-save('fit_x.txt','fit_np','-ascii')
-save('fit_y.txt','signal','-ascii')
-save('weights.txt','weights','-ascii')
+% fit_np=np';% to import to origin
+% save('fit_x.txt','fit_np','-ascii')
+% save('fit_y.txt','signal','-ascii')
+% save('weights.txt','weights','-ascii')
 
 %% curve fitting
 % ft=fittype('gauss1');
@@ -95,8 +95,17 @@ ft2=fittype('a*x^(-b)-207.5+84.7189');
 f=ch;
 t1=mu-tao(BW);
 [p,g]=fit(f(:),t1(:),ft2);
+error=confint(p);
+DM_error=(error(2,1)-error(1,1))/4150;
+beta_error=error(2,2)-error(1,2);
+
+p1=predint(p,f,0.95,'functional','on');
 figure
-plot(p,f,t1,'.b')
+plot(p,f,t1)
+hold on
+plot(f,p1,'m--')
+legend('data','fitted','prediction bounds');
+
 
 
 %% analytical 
@@ -105,3 +114,12 @@ A=sqrt(fh^(2*b)*fl^(2*b)*(fh^(2*b)*fl-fh*fl^(2*b))*(-1+2*b)^3/((fh^(2*b)*fl-fh*f
     *fl^(2*b+1)*(1-2*b)^2*(log(fh/fl))^2));
 dbeta=2^(1/2)*0.1/(4150*DM)*30^(1/2)*snr^(-1)*A;
 
+%save('error.txt','DM_error','beta_error','dbeta','-ascii')
+fid=fopen('conclusion.txt','w');
+fprintf(fid,'Input Parameters?\n');
+fprintf(fid,'DM 500\n beta 2\n BW 100MHz-130MHz\n Channel 31\n');
+fprintf(fid,'fit error:\n');
+fprintf(fid,'DM error is %8.5f\n',DM_error);
+fprintf(fid,'beta error for fit is %8.5f\n',beta_error);
+fprintf(fid,'theoretical error for beta is %8.5f',dbeta);
+fclose(fid);

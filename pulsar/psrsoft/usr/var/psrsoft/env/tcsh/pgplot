@@ -1,0 +1,4 @@
+setenv PGPLOT_DIR $PSRSOFT_USR/share/pgplot
+setenv PGPLOT_FONT $PSRSOFT_USR/share/pgplot/grfont.dat
+setenv PGPLOT_RGB $PSRSOFT_USR/share/pgplot/rgb.txt
+

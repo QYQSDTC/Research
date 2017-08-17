@@ -1,0 +1,6 @@
+#!/bin/sh
+\rm -rf src/pgplot
+\rm -rf share/pgplot
+\rm -f lib/libpgplot*
+\rm -f include/cpgplot.h
+\rm -f var/psrsoft/env/*/pgplot
