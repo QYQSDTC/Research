@@ -1,4 +1,0 @@
-RECOMMENDS pgplot latest
-REPLACES tempo2-core
-REPLACES tempo2
-URL http://www.pulsarastronomy.net/psrsoft//stable/tempo2.tar.gz
