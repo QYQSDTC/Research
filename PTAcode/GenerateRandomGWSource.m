@@ -1,7 +1,8 @@
-%% to generate random sources of GW
-%% use Monte-Carlo simulation method
-%% 2017.2.22 QYQ
 function [Amp,alpha,delta,fgw,iota,Psi,Phi0,r]=GenerateRandomGWSource(Ns)
+% to generate random sources of GW
+% use Monte-Carlo simulation method
+
+% 2017.2.22 QYQ
 %Ns = 1000; % number of sourses
 %% parameters to locate the source
 log10Mc = random('uniform',6,10,1,Ns);

@@ -1,7 +1,7 @@
 %% stochastic gravitational background
 function [timingResidulas_tmp]=SGWB(alphaP,deltaP,distP,yr,Ns,kp)
         
-[Amp,alpha_tmp,delta_tmp,fgw,iota,thetaN,phi0,r]=GenerateRandomGWSource(Ns);
+[Amp,alpha_tmp,delta_tmp,fgw,iota,thetaN,phi0,~]=GenerateRandomGWSource(Ns);
 
 omega_tmp = 2 .* pi .* fgw .* 3 .* 10^7;%% change the unit to yr^-1
 timingResiduals_tmp=zeros(Np,N);   % signal without noise

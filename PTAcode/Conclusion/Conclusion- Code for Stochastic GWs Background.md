@@ -1,6 +1,6 @@
 # Conclusion
 ## Code for Stochastic GW Background
-### QYQ 
+### QYQ
 #### 2017.4.21
 Recently,I use the algorithm *Simulator 4* to simulate the Stochastic Gravitational Wave Background(SGWB) and at here I will demonstrate the algorithm and functions used in the *simulator 4*.
 - - - -
@@ -41,7 +41,7 @@ where Mc is the Chirp Mass is uniformly distributed in $(10^6,10^9)$，fgw is di
 Where the amplitude of the GW source
 $$Amp=\frac{G\mu a^2\omega^2}{c^4D}=\frac{G^{5/3}}{c^4D}M_c^{5/3}\omega^{-1/3}$$
 
-## 1.2 SpherePointPicking 
+## 1.2 SpherePointPicking
 There is another function in this algorithm *SpherePointPicking*. This function is used to take some points in the sphere randomly and these points are used as the random locations of GW sources.
 
 ```matlab
@@ -165,14 +165,13 @@ sd(17)=1.0*10^(-8);
 ```
 # 3. **Calculation of the Timing Residulas**
 In *Simulator 4*, I accumulate the timing residuals brought by every sources for each pulsar and I will get final timing residuals（each pulsar）：
-![timingResidual](/Users/qianyiqian/Desktop/MatlabPrograms/PTAcode/Conclusion/timingResidual.jpg)
 
 Detail calculation for timing residual is in the function *FUllResiduals*.
 
 ```matlab
 for i=1:1:Np
     for j=1:1:Ns  % number of GW sources
-        
+
         % GW sky location in Cartesian coordinate
         k=zeros(1,3);  % unit vector pointing from SSB to source
         k(1)=cos(delta_tmp(j))*cos(alpha_tmp(j));
@@ -183,21 +182,25 @@ for i=1:1:Np
         %phiI(i)=mod(phi0-omega*distP(i)*(1-cos(theta)), 2*pi);  % modulus after division
         %phiI(i)=mod(2*phi0-omega_tmp(l)*distP(i)*(1-cos(theta)), pi);  % modulus after division, YW 09/10/13
         phiI(i)=mod(phi0(j)-0.5*omega_tmp(j)*distP(i)*(1-cos(theta)), pi);  % modulus after division, YW 04/30/14 check original def. of phiI
-        
+
         tmp = FullResiduals(alpha_tmp(j),delta_tmp(j),omega_tmp(j),phi0(j),phiI(i),alphaP(i),deltaP(i),...
             Amp(j),iota(j),thetaN(j),theta,yr);
         timingResiduals_tmp(i,:) = timingResiduals_tmp(i,:)+tmp';
-        
+
     end
-    
+
     inParams = struct('Np',Np,'N',N,'Ns',Ns,'s',timingResiduals_tmp,'sd',sd,...
         'alphaP',alphaP,'deltaP',deltaP,'kp',kp,'yr',yr);
-    
-    
+
+
 end
 
 ```
-
+Plotting the first pulsar's timingResiduals.
+![timingResiduals_1](/Users/qianyiqian/Research/Play Ground/PTAcode/Conclusion/timingResidual_1.jpg)
+```matlab
+plot(timingResiduals_tmp(1,:))
+```
 # 4. **Calculation for Correlation Coefficient**
 After I get the timing residuals, I need to calculate the correlate coefficient for every two pulsars, and I can use this equation:
 $$r(\theta)=\frac{1}{N}\sum^{N-1}_{i=0}R(t_i,\hat {k_1})R(t_i,\hat {k_2})$$
@@ -218,13 +221,13 @@ ct = 1;%% counter
 
 for i=1:1:Np-1
     for j=1+i:1:Np
-        
+
         cthetaC(:,ct)=kp(i,:)*kp(j,:)';%%% cos(theta) between every two pulsar
         R=(timingResiduals_tmp(i,:)*timingResiduals_tmp(i,:)')...
        *(timingResiduals_tmp(j,:)*timingResiduals_tmp(j,:)');
         CE(:,ct) = timingResiduals_tmp(i,:)*timingResiduals_tmp(j,:)'/sqrt(R);
         ct = ct+1;
-        
+
     end
 end
 thetaC=acos(cthetaC)*180/pi;%%%% theta between every two pulsar
@@ -236,5 +239,3 @@ Run the *Simulator 4* and *CorrelationCoefficient* function repeatedly, I can ge
 $$\xi(\theta)=\frac{3}{2}x\log x -\frac{x}{4}+\frac{1}{2}$$
 $$x=[1-\cos (\theta)]/2$$
 ![Helling-Downs Curve](/Users/qianyiqian/Desktop/MatlabPrograms/PTAcode/Conclusion/Helling-DownsCurve.jpg)
-
-
