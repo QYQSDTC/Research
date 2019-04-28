@@ -22,8 +22,8 @@ pr1 = pr0.^(1/3);
 histgram(Pr1)
 ```
 
-![Pr分布](/Users/qianyiqian/Desktop/MatlabPrograms/PTAcode/Conclusion/Pr.jpg
-)
+![Pr分布](/Users/qianyiqian/Research/Play Ground/PTAcode/Conclusion/Pr.jpg)
+
 As for the other patameters：
 
 ```matlab
@@ -197,16 +197,17 @@ end
 
 ```
 Plotting the first pulsar's timingResiduals.
-![timingResiduals_1](/Users/qianyiqian/Research/Play Ground/PTAcode/Conclusion/timingResidual_1.jpg)
+![timingResiduals_1](/Users/qianyiqian/Research/Play Ground/PTAcode/Conclusion/timingResidual_1.jpg "Timing residuals for first pulsar")
+
 ```matlab
 plot(timingResiduals_tmp(1,:))
 ```
 # 4. **Calculation for Correlation Coefficient**
 After I get the timing residuals, I need to calculate the correlate coefficient for every two pulsars, and I can use this equation:
-$$r(\theta)=\frac{1}{N}\sum^{N-1}_{i=0}R(t_i,\hat {k_1})R(t_i,\hat {k_2})$$
-where $R(t_i,\hat {k_1})$is the timing residual for time $i$ ，$\hat {k_1}$ is the first pulsar's location vector to us.
+$$r(\theta)=\frac{1}{N}\sum^{N-1}_{i=0}R(t_i,\hat {k_1})R(t_i,\hat {k_2})​$$
+where $R(t_i,\hat {k_1})​$is the timing residual for time $i​$ ，$\hat {k_1}​$ is the first pulsar's location vector to us.
 After I match every two pulsars as a pair, I calculate the correlation coefficient for every pair and I get：
-![相关系数](/Users/qianyiqian/Desktop/MatlabPrograms/PTAcode/Conclusion/CorrelationEfficients.jpg)
+![相关系数](/Users/qianyiqian/Research/Play Ground/PTAcode/Conclusion/CorrelationEfficients.jpg)
 
 ```matlab
 function [CE,thetaC] = CorrelationCoefficient()
@@ -238,4 +239,4 @@ thetaC=acos(cthetaC)*180/pi;%%%% theta between every two pulsar
 Run the *Simulator 4* and *CorrelationCoefficient* function repeatedly, I can get lots of different correlation coefficients for every pairs, because the parameters used to determine the sources are random and at last I simply average these coefficients and I can get the Helling-Downs Curve perfectly fit the theoretical prediction:
 $$\xi(\theta)=\frac{3}{2}x\log x -\frac{x}{4}+\frac{1}{2}$$
 $$x=[1-\cos (\theta)]/2$$
-![Helling-Downs Curve](/Users/qianyiqian/Desktop/MatlabPrograms/PTAcode/Conclusion/Helling-DownsCurve.jpg)
+![Helling-Downs Curve](/Users/qianyiqian/Research/Play Ground/PTAcode/Conclusion/Helling-DownsCurve.jpg)
